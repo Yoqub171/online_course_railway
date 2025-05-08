@@ -1,10 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Product
+from django.http.response import HttpResponse
+
 
 def home(request):
     products = Product.objects.all()
-    return render(request, 'shop/home.html', {'products': products})
+    context = {
+        'products': products,
+    }
+    return render(request, 'shop/home.html',context)
 
-def product_detail(request, id):
-    product = get_object_or_404(Product, id=id)
-    return render(request, 'shop/product_detail.html', {'product': product})
+
+def product_detail(request, product_id): 
+    try:
+        product = Product.objects.get(id=product_id)
+        context = {'product': product}
+        return render(request, 'shop/detail.html', context)
+    except Product.DoesNotExist:
+        return HttpResponse('Product Not Found')
+
+    
