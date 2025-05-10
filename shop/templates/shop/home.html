@@ -23,20 +23,21 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item<a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><a class="dropdown-item" href="{% url 'home' %}">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                                {% for category in categories%}
+                                    <li><a class="dropdown-item" href="{% url 'products_by_category' category.id %}">{{category.title}}</a></li>
+                                {%endfor%}
                             </ul>
                         </li>
                     </ul>
-                    <form class="d-flex">
-                        <input type="text" class="form-contro">
+                    <form method="get" class="d-flex">
+                        <input type="text" class="form-control" name="q">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-search-fill me-1"></i>
                             Search
@@ -63,7 +64,7 @@
             </div>
             <div class="row">
                 <div class="col-1">
-                    <a class="btn btn-outline-dark mt-auto" href="#"> Expensive </a>
+                    <a class="btn btn-outline-dark mt-auto" href="?filter=expensive"> Expensive </a>
                 </div>
 
                 <div class="col-1">
@@ -89,7 +90,7 @@
 
                                 <!-- Product image-->
                                 <a href="{% url 'product_detail' product.id %}">
-                                    <img class="card-img-top" src="{{product.get_absolute_url}}" alt="..." />
+                                    <img class="card-img-top" src="{{ product.get_absolute_url }}" alt="{{product.name}}" />
                                 </a>
                                 <!-- Product details-->
                                 <div class="card-body p-4">
