@@ -1,0 +1,66 @@
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Mahsulotni tahrirlash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-4">
+        <div class="card-header bg-warning text-white">
+            <h3 class="mb-0">✏️ Mahsulotni tahrirlash</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_name" class="form-label">Mahsulot nomi</label>
+                    {{ form.name|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Tavsifi</label>
+                    {{ form.description|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_price" class="form-label">Narxi (UZS)</label>
+                    {{ form.price|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_image" class="form-label">Rasm</label>
+                    {{ form.image|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_discount" class="form-label">Chegirma (%)</label>
+                    {{ form.discount|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_category" class="form-label">Kategoriya</label>
+                    {{ form.category|add_class:"form-select" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_quantity" class="form-label">Mavjud miqdori</label>
+                    {{ form.quantity|add_class:"form-control" }}
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    ✏️ Yangilash
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

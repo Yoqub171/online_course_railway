@@ -30,9 +30,9 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{% url 'home' %}">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                {% for category in categories%}
+                                {% for category in categories %}
                                     <li><a class="dropdown-item" href="{% url 'products_by_category' category.id %}">{{category.title}}</a></li>
-                                {%endfor%}
+                                {% endfor %}
                             </ul>
                         </li>
                     </ul>
@@ -41,7 +41,6 @@
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-search-fill me-1"></i>
                             Search
-                           
                         </button>
                     </form>
                 </div>
@@ -52,29 +51,34 @@
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+                    <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
                 </div>
             </div>
         </header>
         <!-- Section-->
-
         <div class="container mt-5">
             <div class="text-left">
                 <h3>Filter by</h3>
-            </div>
+            </div>  
             <div class="row">
                 <div class="col-1">
-                    <a class="btn btn-outline-dark mt-auto" href="?filter=expensive"> Expensive </a>
+                    <a class="btn btn-outline-dark mt-auto" href="#"> Expensive </a>
                 </div>
-
                 <div class="col-1">
                     <a class="btn btn-outline-dark mt-auto" href="#"> Cheap </a>
                 </div>
-
                 <div class="col-1">
                     <a class="btn btn-outline-dark mt-auto" href="#"> Likes </a>
                 </div>
-
+                {% if user.is_authenticated %}
+                    <div class="col-1">
+                        <a href="{% url 'create_product' %}">
+                            <button type="button" class="btn btn-success" style="font-size: 16px; padding: 10px 20px; border-radius: 8px;">
+                                ➕ ADD PRODUCT
+                            </button>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <section class="py-5">
@@ -86,17 +90,17 @@
                                 <!-- Sale badge-->
                                 {% if product.discount %}
                                     <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                                {%endif%}
+                                {% endif %}
 
                                 <!-- Product image-->
                                 <a href="{% url 'product_detail' product.id %}">
-                                    <img class="card-img-top" src="{{ product.get_absolute_url }}" alt="{{product.name}}" />
+                                    <img class="card-img-top" src="{{ product.get_absolute_url }}" alt="..." />
                                 </a>
                                 <!-- Product details-->
                                 <div class="card-body p-4">
                                     <div class="text-center">
                                         <!-- Product name-->
-                                        <h5 class="fw-bolder">{{product.name}}</h5>
+                                        <h5 class="fw-bolder">{{ product.name }}</h5>
                                         <!-- Product reviews-->
                                         <div class="d-flex justify-content-center small text-warning mb-2">
                                             <div class="bi-star-fill"></div>
@@ -106,19 +110,26 @@
                                             <div class="bi-star-fill"></div>
                                         </div>
                                         <!-- Product price-->
-                                        {%if product.discount%}
-                                            <span class="text-muted text-decoration-line-through">${{product.price}}</span>
-                                            ${{product.discounted_price}} 
-                                        {%else%}
-                                            ${{product.discounted_price}} 
-                                        {%endif%}
+                                        {% if product.discount %}
+                                            <span class="text-muted text-decoration-line-through">${{ product.price }}</span>
+                                            ${{ product.discounted_price }} 
+                                        {% else %}
+                                            ${{ product.discounted_price }} 
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product_detail' product.id %}">View product</a></div>
-                                
-                                    
+                                    {% if user.is_authenticated and user == product.owner %}
+                                        <div class="d-flex justify-content-center">
+                                            <a href="{% url 'edit_product' product.id %}" class="btn btn-warning btn-sm me-2">Edit</a>
+                                            <form method="post" action="{% url 'delete_product' product.id %}" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

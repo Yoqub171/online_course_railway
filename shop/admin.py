@@ -11,4 +11,3 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'discount', 'category']
     search_fields = ['name']
     list_filter = ['price']
-
