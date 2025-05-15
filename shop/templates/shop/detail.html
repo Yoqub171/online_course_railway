@@ -58,8 +58,9 @@
 
 
                     <div class="col-md-6">
-                        
+                        <a href="{% url 'edit_product' product.id %}">
                             <button type="button" class="btn btn-outline-primary">Edit</button>
+                        </a>
                         
                         <a href="{% url 'delete_product' product.id %}">
                             <button type="button" class="btn btn-outline-danger">Delete</button><br>
@@ -126,29 +127,16 @@
             <div class="row">
                 <div class="col-12">
                     <div class="text-center">
-                        <h2>Latest comments</h2>
+                        <h2>Latest comments ({{product.comments.count}})</h2>
                     </div>
-
-                    <div class="media card p-4 mt-2">
-                        <div class="media-body">
-                          <h3 class="mt-0">John Doe</h3>
-                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    {%for comment in product.comments.all%}
+                        <div class="media card p-4 mt-2">
+                            <div class="media-body">
+                            <h3 class="mt-0">{{comment.name}} ==> {{comment.created_at}}</h3>
+                            {{comment.content}}
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="media card p-4 mt-2">
-                        <div class="media-body">
-                          <h3 class="mt-0">John Doe</h3>
-                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
-                    </div>
-
-                    <div class="media card p-4 mt-2">
-                        <div class="media-body">
-                          <h3 class="mt-0">John Doe</h3>
-                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
-                    </div>
+                    {%endfor%}
 
                 </div>
 
@@ -159,24 +147,36 @@
                             <h3>Add Comment</h3>
                         </div>
                     
-                    <form>
+                    <form method="post" action="{% url 'comment_create' product.id %}">
+                        {%csrf_token%}
+                        <div>
+                            <select name="rating" id="rating">
+                                <option value="">Baholang</option>
+                                <option value="1">* (1)</option>
+                                <option value="2">** (2)</option>
+                                <option value="3">*** (3)</option>
+                                <option value="4">**** (4)</option>
+                                <option value="5">***** (5)</option>
+                            </select>
+                        </div>
+
                         <div class="form-group mb-3">
                           <label for="formGroupExampleInput">Your name</label>
-                          <input type="text" class="form-control"  placeholder="Your name">
+                          <input type="text" name="name" class="form-control"  placeholder="Your name">
                         </div>
                         <div class="form-group mb-3">
                           <label for="formGroupExampleInput2">Your email</label>
-                          <input type="text" class="form-control" placeholder="Your email">
+                          <input type="email" name="email" class="form-control" placeholder="Your email">
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="formGroupExampleInput2">Your comment</label>
-                           <textarea name="" class="form-control" id="" cols="30" rows="10"></textarea>
+                           <textarea name="content" class="form-control" id="" cols="30" rows="10"></textarea>
                           </div>
 
                           <div class="form-group mb-3">
                            
-                            <input type="text" class="btn btn-success" value="Send">
+                            <input type="submit" class="btn btn-success" value="Send">
                           </div>
                       </form>
 

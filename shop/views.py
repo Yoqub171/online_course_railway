@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import Product, Order, Category
-from .forms import OrderForm, ProductForm
+from .models import Product, Category
+from .forms import OrderForm, ProductForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
+
 
 def home(request, category_id=None):
     search_query = request.GET.get('q', '')
@@ -13,6 +15,8 @@ def home(request, category_id=None):
         products = Product.objects.filter(category_id=category_id)
     else:
         products = Product.objects.all()
+
+    products = products.annotate(average_rating=Avg('comments__rating'))
 
     if search_query:
         products = products.filter(name__icontains=search_query)
@@ -28,11 +32,13 @@ def product_detail(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
         form = OrderForm()
+
         context = {
             'product': product,
             'form': form
         }
         return render(request, 'shop/detail.html', context)
+    
     except Product.DoesNotExist:
         return HttpResponse('Product Not Found')
 
@@ -125,3 +131,21 @@ def delete_product(request, pk):
         product.delete()
         return redirect('home') 
     return render(request, 'shop/product/delete.html', {'product': product})
+
+def comment_create(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.user = request.user
+            comment.save()
+            return redirect('product_detail', product_id=product.id)
+        else:
+            print(form.errors) 
+    else:
+        form = CommentForm()
+    
+    return render(request, 'shop/detail.html', {'form': form})  
