@@ -4,11 +4,16 @@ from decimal import Decimal
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         abstract = True
 
-class Category(models.Model):
+class Category(BaseModel):
     title = models.CharField(max_length=100, unique=True)
     
     def __str__(self):
@@ -17,9 +22,10 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'categories'
         verbose_name = 'category'
+        ordering = ['my_order']
 
 
-class Product(models.Model):
+class Product(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -47,7 +53,7 @@ class Product(models.Model):
     class Meta:
         verbose_name_plural = 'products'
         verbose_name = 'product'
-        ordering = ['-price']
+        ordering = ['my_order']
 
 
 class Order(models.Model):

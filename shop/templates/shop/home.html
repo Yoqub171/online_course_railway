@@ -62,13 +62,13 @@
         </div>  
         <div class="row">
             <div class="col-1">
-                <a class="btn btn-outline-dark mt-auto" href="#"> Expensive </a>
+                <a class="btn btn-outline-dark mt-auto" href="?filter=expensive"> Expensive </a>
             </div>
             <div class="col-1">
-                <a class="btn btn-outline-dark mt-auto" href="#"> Cheap </a>
+                <a class="btn btn-outline-dark mt-auto" href="?filter=cheap"> Cheap </a>
             </div>
             <div class="col-1">
-                <a class="btn btn-outline-dark mt-auto" href="#"> Likes </a>
+                <a class="btn btn-outline-dark mt-auto" href="?filter=average_rating"> Rating </a>
             </div>
             {% if user.is_authenticated %}
                 <div class="col-1">
@@ -102,12 +102,8 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">{{ product.name }}</h5>
                                     <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <!-- Reytingni yulduzlar bilan ko'rsatish -->
-                                        {% for i in "12345" %}
-                                            <div class="bi-star{% if forloop.counter <= product.average_rating|default:0 %}-fill{% endif %}"></div>
-                                        {% endfor %}
-
+                                    <div class="">
+                                        Rating: {{product.average_rating}}
                                     </div>
                                     <!-- Product price-->
                                     {% if product.discount %}

@@ -5,10 +5,14 @@ from .models import Product, Category
 from .forms import OrderForm, ProductForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
+from django.db.models.functions import Round
+from .utils import product_rating_filter
+
 
 
 def home(request, category_id=None):
     search_query = request.GET.get('q', '')
+    filter_type = request.GET.get('filter','')
     categories = Category.objects.all()
 
     if category_id:
@@ -16,10 +20,12 @@ def home(request, category_id=None):
     else:
         products = Product.objects.all()
 
-    products = products.annotate(average_rating=Avg('comments__rating'))
-
     if search_query:
         products = products.filter(name__icontains=search_query)
+
+    products = products.annotate(average_rating = Round(Avg('comments__rating'), precision = 2))
+
+    products = product_rating_filter(filter_type, products)
 
     context = {
         'products': products,
@@ -149,3 +155,4 @@ def comment_create(request, pk):
         form = CommentForm()
     
     return render(request, 'shop/detail.html', {'form': form})  
+
