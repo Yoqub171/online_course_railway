@@ -28,10 +28,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'home' %}">All Products</a></li>
+                            <li><a class="dropdown-item" href="{% url 'shop:home' %}">All Products</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             {% for category in categories %}
-                                <li><a class="dropdown-item" href="{% url 'products_by_category' category.id %}">{{category.title}}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'shop:products_by_category' category.id %}">{{category.title}}</a></li>
                             {% endfor %}
                         </ul>
                     </li>
@@ -72,7 +72,7 @@
             </div>
             {% if user.is_authenticated %}
                 <div class="col-1">
-                    <a href="{% url 'create_product' %}">
+                    <a href="{% url 'shop:create_product' %}">
                         <button type="button" class="btn btn-success" style="font-size: 16px; padding: 10px 20px; border-radius: 8px;">
                             ➕ ADD PRODUCT
                         </button>
@@ -93,7 +93,7 @@
                             {% endif %}
 
                             <!-- Product image-->
-                            <a href="{% url 'product_detail' product.id %}">
+                            <a href="{% url 'shop:product_detail' product.id %}">
                                 <img class="card-img-top" src="{{ product.get_absolute_url }}" alt="..." />
                             </a>
                             <!-- Product details-->
@@ -116,7 +116,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product_detail' product.id %}">View product</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'shop:product_detail' product.id %}">View product</a></div>
                                 {% if user.is_authenticated and user == product.owner %}
                                     <div class="d-flex justify-content-center">
                                         <a href="{% url 'edit_product' product.id %}" class="btn btn-warning btn-sm me-2">Edit</a>

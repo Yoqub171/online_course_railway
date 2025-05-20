@@ -3,6 +3,9 @@ from .views import home, product_detail, order_detail, create_product, delete_pr
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+app_name = 'shop'
+
 urlpatterns = [
     path('', home, name='home'),
     path('category/<int:category_id>/', home, name='products_by_category'),

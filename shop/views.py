@@ -37,11 +37,13 @@ def home(request, category_id=None):
 def product_detail(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
+        related_products = Product.objects.filter(category = product.category).exclude(id = product.id)
         form = OrderForm()
 
         context = {
             'product': product,
-            'form': form
+            'form': form,
+            'related_products': related_products
         }
         return render(request, 'shop/detail.html', context)
     
@@ -78,7 +80,7 @@ def order_detail(request, pk):
                     'Item successfully ordered'
                 )
 
-                return redirect('product_detail', pk=product.pk)
+                return redirect('shop:product_detail', pk=product.pk)
 
     context = {
         'form': form,
@@ -97,7 +99,7 @@ def create_product(request):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Mahsulot muvaffaqiyatli qo\'shildi!')
-            return redirect('home')
+            return redirect('shop:home')
 
     context = {
         'form': form
@@ -120,7 +122,7 @@ def edit_product(request, pk):
                 messages.SUCCESS,
                 'Product updated successfully'
             )
-            return redirect('product_detail', pk=product.pk)
+            return redirect('shop:product_detail', pk=product.pk)
 
     context = {
         'form': form,
@@ -135,7 +137,7 @@ def delete_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
         product.delete()
-        return redirect('home') 
+        return redirect('shop:home') 
     return render(request, 'shop/product/delete.html', {'product': product})
 
 def comment_create(request, pk):
@@ -148,7 +150,7 @@ def comment_create(request, pk):
             comment.product = product
             comment.user = request.user
             comment.save()
-            return redirect('product_detail', product_id=product.id)
+            return redirect('shop:product_detail', product_id=product.id)
         else:
             print(form.errors) 
     else:

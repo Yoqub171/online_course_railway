@@ -23,6 +23,7 @@ class Category(BaseModel):
         verbose_name_plural = 'categories'
         verbose_name = 'category'
         ordering = ['my_order']
+        db_table = 'category'
 
 
 class Product(BaseModel):
@@ -54,6 +55,7 @@ class Product(BaseModel):
         verbose_name_plural = 'products'
         verbose_name = 'product'
         ordering = ['my_order']
+        db_table = 'product'
 
 
 class Order(models.Model):
@@ -67,6 +69,9 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.quantity}"
+    
+    class Meta:
+        db_table = 'order'
 
 
 class Comment(BaseModel):
@@ -85,3 +90,6 @@ class Comment(BaseModel):
 
     def __str__(self):
         return f'{self.name} - {self.rating}'
+
+    class Meta:
+        db_table = 'comment'
