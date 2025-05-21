@@ -6,7 +6,7 @@ from django.utils import timezone
 from .managers import CustomUserManager
 
 
-class CustomUser(AbstractUser, PermissionError):
+class CustomUser(AbstractUser, PermissionsMixin):
     username = None
     email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(default=True)

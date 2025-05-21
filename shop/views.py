@@ -129,7 +129,9 @@ def edit_product(request, pk):
         'product': product
     }
 
-    return render(request, 'shop/product/edit.html', context)
+    return render(request, 'shop/product/edit.html', {'form': form})
+
+    
 
 
 @login_required

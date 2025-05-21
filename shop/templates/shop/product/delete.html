@@ -27,7 +27,7 @@
         Siz rostdan ham ushbu mahsulotni o‘chirmoqchimisiz?
       </div>
       <div class="modal-footer">
-        <form method="post" action="{% url 'delete_product' product.id %}">
+        <form method="post" action="{% url 'shop:delete_product' product.id %}">
             {% csrf_token %}
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yo‘q</button>
             <button type="submit" class="btn btn-danger">Ha, o‘chirilsin</button>

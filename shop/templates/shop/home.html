@@ -38,11 +38,27 @@
                 </ul>
                 <form method="get" class="d-flex">
                     <input type="text" class="form-control" name="q">
-                    <button class="btn btn-outline-dark" type="submit">
+                    <button style="margin-right: 50px" class="btn btn-outline-dark" type="submit">
                         <i class="bi-search-fill me-1"></i>
                         Search
                     </button>
                 </form>
+
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'users:logout_page' %}">
+                    {% csrf_token %}
+                    <div>
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                        {{user.email}}
+                    </div>
+                </form>
+                {% else %}
+                    <div>
+                        <a href="{% url 'users:login_page' %}">
+                            <button type="button" class="btn btn-primary">Login</button>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </nav>
