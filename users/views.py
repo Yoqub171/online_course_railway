@@ -1,7 +1,11 @@
 from django.shortcuts import render,redirect
-from .forms import LoginForm, CustomUserRegisterForm
+from django.http import HttpResponse
+from .forms import LoginForm,RegisterModelForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+
+
+# Create your views here.
 
 
 def login_page(request):
@@ -23,7 +27,10 @@ def login_page(request):
                     messages.ERROR,
                     'Username or Password incorrect'   
                 )
+                pass
+            # messages
     return render(request,'users/login.html',{'form':form})
+
 
 
 def logout_page(request):
@@ -31,14 +38,14 @@ def logout_page(request):
         logout(request)
         return redirect('shop:home')
     
-
+    
 def register_page(request):
+    form = RegisterModelForm()
     if request.method == 'POST':
-        form = CustomUserRegisterForm(request.POST)
+        form = RegisterModelForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Ro‘yxatdan o‘tish muvaffaqiyatli bo‘ldi. Endi kirishingiz mumkin.')
-            return redirect('users:login_page')
-    else:
-        form = CustomUserRegisterForm()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect('shop:home')
     return render(request, 'users/register.html', {'form': form})

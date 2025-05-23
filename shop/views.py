@@ -122,7 +122,8 @@ def edit_product(request, pk):
                 messages.SUCCESS,
                 'Product updated successfully'
             )
-            return redirect('shop:product_detail', pk=product.pk)
+            return redirect('shop:product_detail', product_id=product.pk)
+
 
     context = {
         'form': form,
