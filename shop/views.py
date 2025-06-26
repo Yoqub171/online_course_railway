@@ -23,7 +23,7 @@ def home(request, category_id=None):
     if search_query:
         products = products.filter(name__icontains=search_query)
 
-    products = products.annotate(average_rating = Round(Avg('comments__rating'), precision = 2))
+    products = products.annotate(average_rating = Round(Avg('comments__rating'), precision = 2)).order_by('-average_rating')
 
     products = product_rating_filter(filter_type, products)
 
