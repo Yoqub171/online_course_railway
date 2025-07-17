@@ -53,3 +53,4 @@ urllib3==2.3.0
 v==1
 whitenoise==6.9.0
 yt-dlp==2025.1.15
+python-dotenv

@@ -14,6 +14,11 @@ from pathlib import Path
 import os
 
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,14 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 # 'django-insecure-!qr0m^7a(^k%v5kea**w0^ovuii11!y-!g6-=ew(m2x(^may0h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "True"
 
-ALLOWED_HOSTS = ['web-production-f04f.up.railway.app', '127.0.0.1', 'localhost']
+
+ALLOWED_HOSTS = ['tech-store.up.railway.app', '127.0.0.1', 'localhost']
 
 
 
@@ -152,4 +158,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
-
